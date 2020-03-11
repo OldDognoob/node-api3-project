@@ -19,12 +19,27 @@ server.use("/api/posts",postRouter);
 
 
 
-server.get('/', (req, res) => {
-  res.send(`<h2>Let's write some middleware!</h2>`);
+server.get('/friend',(req,res)=>{
+  res.send(`<h2>Hello,friend!</h2>`);
+})
+
+server.get('/:id', (req, res) => {
+  res.send(`<h2>That is a nice id: ${req.params.id}</h2>`);
+})
+
+
+const users = [];
+
+server.post('/users',logger,(req,res)=>{
+users.push({name:req.cleanName, age:req.cleanAge})
+res.status(201).json(users);
 });
+
 
 //custom middleware
 
 function logger(req, res, next) {}
+console.log(`${req.method} ${req.path}`);
+  next();
 
 module.exports = server;
