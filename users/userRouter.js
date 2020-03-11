@@ -21,6 +21,7 @@ router.post("/", validateUser(), (req, res) => {
 
 router.post("/:id/posts", validateUserId(), validatePost(), (req, res) => {
   // do your magic!
+  // res.status(200).json(req.body);
   const infoToSend = { user_id: req.user.id, text: req.body.tex };
   posts
     .insert(info)

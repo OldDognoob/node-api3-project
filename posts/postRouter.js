@@ -1,5 +1,5 @@
 const express = require("express");
-const posts = require("../posts/postDb");
+const posts = require("./postDb");
 const router = express.Router();
 
 router.get("/", (req, res) => {
@@ -40,6 +40,7 @@ router.put("/:id", validatePost(), validatePostId(), (req, res) => {
 
 function validatePostId(req, res, next) {
   // do your magic!
+  
   posts.getById(req.params.id)
   .then((post) => {
     if(post) {
@@ -52,6 +53,10 @@ function validatePostId(req, res, next) {
   .catch(err => {
     next(err)
   })
+
+
+
+  
 }
 
 
