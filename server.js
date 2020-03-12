@@ -1,12 +1,13 @@
+const cors = require("cors");
 const express = require("express");
 const helmet = require("helmet");
 const usersRouter = require("./users/userRouter");
 const postsRouter = require("./posts/postRouter");
 const server = express();
 
-//plug in the body parsing ability
 server.use(express.json());
 server.use(helmet());
+server.use(cors());
 server.use("/users", usersRouter);
 server.use("/posts", postsRouter);
 
@@ -20,15 +21,24 @@ server.get("/:id", (req, res) => {
 
 const users = [];
 
-server.post("/users", logger, (req, res) => {
-  users.push({ name: req.cleanName, age: req.cleanAge });
-  res.status(201).json(users);
-});
+server.post(
+  "/users",
+  logger,
+  (req, res) => {
+    users.push({ id: req.cleanId, name: req.cleanName, post: req.cleanPost });
+    res.status(201).json(users);
+  }
+);
 
 //custom middleware
 
 function logger(req, res, next) {
-  console.log(`${req.method} ${req.path}`);
+  console.log(
+    `[${new Date().toISOString()}] ${req.method} to ${req.url} from ${req.get(
+      "Origin"
+    )}`
+  );
+
   next();
 }
 
